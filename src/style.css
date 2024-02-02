@@ -1,0 +1,56 @@
+body{
+    background-color: rgb(65, 65, 65);
+}
+
+
+#app{
+    display: grid;
+    place-items: center;
+
+    height: 75vh;
+}
+
+#question{
+    background-color: rgb(175, 175, 175);
+    border: none;
+    font-size: xx-large;
+    text-align: center;
+
+
+    padding: 10px;
+}
+
+#options{
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr;
+    gap: 10px;
+    width: 500px;
+}
+
+.option{
+    font-size: larger;
+    height: 50px;
+    width: 100%;
+    border: none;
+
+    transition: 0.3s all;
+}
+
+.option:hover{
+    transform: scale(1.2);
+    background-color: gray;
+}
+
+.correct{
+    background-color: greenyellow; !important
+}
+.correct:hover{
+    background-color: yellowgreen;
+}
+
+.wrong{
+    background-color: red;
+}
+.wrong:hover{
+    background-color: red;
+}
