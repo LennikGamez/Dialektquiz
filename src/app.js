@@ -14,6 +14,7 @@ class App{
         this.example = '';
         
         this.timeout = 2000;
+        this.guessed = false;
 
         this.options.forEach(element =>
             {
@@ -22,16 +23,19 @@ class App{
     }
 
     checkAnswer(element){
-        console.log(element);
         const app = this;
         element.addEventListener('click', ()=>{
+            if (app.guessed){
+                return;
+            }
+
             if(element.innerText == app.answer){
                 element.classList.add('correct');
             }else{
                 element.classList.add('wrong');
                 console.log("Die richtige Antwort war "+ app.answer);
             }
-
+            this.guessed = true;
             setTimeout(() =>{
                 app.generateQuestion(app);
             }, this.timeout);
@@ -76,6 +80,7 @@ class App{
 
 
     generateQuestion(app){
+        this.guessed = false;
         this.options.forEach((element)  => {
             element.classList.remove('wrong');
             element.classList.remove('correct');
