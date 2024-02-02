@@ -1,4 +1,12 @@
 import hessischData from '../data/hessisch.json' assert {type: 'json'};
+import berlinData from '../data/Berlin.json' assert {type: 'json'};
+import ruhrpottData from '../data/Ruhrpott.json' assert {type: 'json'};
+
+const data = {
+    'hessisch': hessischData,
+    'ruhrpott': ruhrpottData,
+    'berlin': berlinData
+}
 
 class App{
     
@@ -8,6 +16,8 @@ class App{
         this.questionField = document.getElementById('question');
         this.optionDiv = document.getElementById('options');
         this.options = document.querySelectorAll('.option');
+        this.select = document.getElementById('changeDict');
+        this.correctElement = null;
         
         this.question = '';
         this.answer = '';
@@ -16,13 +26,17 @@ class App{
         this.timeout = 2000;
         this.guessed = false;
 
+        this.select.addEventListener('change', (element)=>{
+            this.loadData(data[element.target.value]);
+        })
+
         this.options.forEach(element =>
             {
                 this.checkAnswer(element);   
             })
     }
 
-    checkAnswer(element){
+        checkAnswer(element){
         const app = this;
         element.addEventListener('click', ()=>{
             if (app.guessed){
@@ -34,6 +48,7 @@ class App{
             }else{
                 element.classList.add('wrong');
                 console.log("Die richtige Antwort war "+ app.answer);
+                app.correctElement.classList.add('solution');
             }
             this.guessed = true;
             setTimeout(() =>{
@@ -47,7 +62,7 @@ class App{
     }
 
     selectRandomWord(){
-        const entry = choice(hessischData);
+        const entry = choice(this.dataBase);
 
         this.question = entry.word;
         this.answer = entry.description;
@@ -59,7 +74,7 @@ class App{
     selectRandomOptions(){
         let descriptions = [];
         for(let i=0; i<this.options.length-1; i++){
-            const entry = choice(hessischData);
+            const entry = choice(this.dataBase);
             descriptions.push(entry.description);
         }
         // Add in the correct answer
@@ -71,6 +86,9 @@ class App{
     applyOptions(descriptions){
         this.options.forEach((element, index) => {
             element.innerText = descriptions[index]; 
+            if(element.innerText == this.answer){
+                this.correctElement = element;
+            }
         })
     }
 
@@ -84,6 +102,7 @@ class App{
         this.options.forEach((element)  => {
             element.classList.remove('wrong');
             element.classList.remove('correct');
+            element.classList.remove('solution');
         });
         app.selectRandomWord();
         app.selectRandomOptions();
